@@ -1,58 +1,43 @@
 package com.mybankshopos.entity;
 
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 @Entity
-@Table(name = "customer")
+@Data @NoArgsConstructor @AllArgsConstructor
 public class Customer {
-	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-	@Column(name = "Document Type", nullable = false)
 	private String documentType;
-
-	@Column(name = "Document Number", nullable = false, unique = true)
 	private int documentNumber;
-
-	@Column(name = "Name", length = 60, nullable = false)
 	private String name;
-
-	@Column(name = "Last Name", length = 60, nullable = false)
 	private String lastName;
-
-	@Column(name = "Email", length = 60, nullable = false, unique = true)
 	private String email;
-	
-	@Column(name = "Date Birth", nullable = false)
 	private String dateBirth;
-	
+
 	
 	@OneToMany(mappedBy = "customer")
-	@JsonManagedReference
-	private List<Product> product;
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+	private List<BankAccount> bankAccounts;
 
 
 	public Customer() {
 	}
-	
-	
 
 
 	public Customer(Long id, String documentType, int documentNumber, String name, String lastName, String email,
-			String dateBirth, String products, List<Product> product) {
+			String dateBirth, List<BankAccount> bankAccounts) {
 		super();
 		this.id = id;
 		this.documentType = documentType;
@@ -61,10 +46,8 @@ public class Customer {
 		this.lastName = lastName;
 		this.email = email;
 		this.dateBirth = dateBirth;
-		this.product = product;
+		this.bankAccounts = bankAccounts;
 	}
-
-
 
 
 	public Long getId() {
@@ -136,17 +119,18 @@ public class Customer {
 		this.dateBirth = dateBirth;
 	}
 
-	
-	public List<Product> getProducts() {
-		return product;
+
+	public List<BankAccount> getBankAccounts() {
+		return bankAccounts;
 	}
 
 
-	public void setProducts(List<Product> products) {
-		this.product = products;
+	public void setBankAccounts(List<BankAccount> bankAccounts) {
+		this.bankAccounts = bankAccounts;
 	}
-
-
+	
 	
 
+	
+	
 }
